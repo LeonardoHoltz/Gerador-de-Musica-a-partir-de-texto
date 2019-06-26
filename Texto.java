@@ -1,3 +1,5 @@
+package gerasom;
+
 import java.lang.Character;
 
 public class Texto {
@@ -95,12 +97,13 @@ public class Texto {
 	}
 	
 	
-	public String textoParaMusicString(String textoFormatado) {
+	public String textoParaMusicString(String textoFormatado, String tempoBPM) {
 		char[] textoFormatadoChar = textoFormatado.toCharArray();
 		StringBuilder arrayMusical = new StringBuilder();
 		oitava = OITAVA_DEFAULT;
 		instrumento = INSTRUMENTO_DEFAULT;
 		volume = VOLUME_DEFAULT;
+		arrayMusical.append("T[" + tempoBPM + "] ");
 		for(int i = 0; i < textoFormatadoChar.length; i++) {
 			if(ehNota(textoFormatadoChar[i])) {
 				// Padrão estipulado: Oitavas sempre serão concatenadas com as notas musicais
@@ -180,6 +183,5 @@ public class Texto {
 		return stringMusical;
 		
 	}
-
-
+	
 }
