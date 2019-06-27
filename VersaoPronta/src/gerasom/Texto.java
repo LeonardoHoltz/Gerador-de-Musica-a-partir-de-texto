@@ -1,5 +1,7 @@
 package gerasom;
 
+import java.lang.Character;
+
 public class Texto {
 	
 	private static String oitava;
@@ -14,7 +16,7 @@ public class Texto {
 	public static String stringMusical;
 	
 	public static boolean charValido(char caractere) {
-		// True se o caractere altera algo na m�sica, false caso o contr�rio
+		// True se o caractere altera algo na masica, false caso o contrario
 		switch (caractere) {
 			case 'A':
 			case 'B':
@@ -45,7 +47,7 @@ public class Texto {
 	}
 	
 	private static boolean ehNota(char caractere) {
-		// True se o char � uma nota v�lida, false caso o contr�rio
+		// True se o char for uma nota valida, false caso o contrario
 		switch (caractere) {
 			case 'A':
 			case 'B':
@@ -62,15 +64,24 @@ public class Texto {
 
 	public String formataTexto(String inputTexto) {
 		char[] textoFormatado = inputTexto.toCharArray();
+		boolean ultimoCharEhNota = false;
 		for(int i = 0; i < textoFormatado.length; i++) {
 			if(i == 0) {
 				if(!charValido(textoFormatado[i]))
-					textoFormatado[i] = 'X';	// O caractere X indicar� uma pausa
+					textoFormatado[i] = 'X';	// O caractere X indicara uma pausa
 			}
 			else {
 				if(!charValido(textoFormatado[i])) {
-					if(ehNota(textoFormatado[i-1]))
-						textoFormatado[i] = textoFormatado[i-1];
+					if(ehNota(textoFormatado[i-1])) {
+						if(!ultimoCharEhNota) {
+							textoFormatado[i] = textoFormatado[i-1];
+							ultimoCharEhNota = true;
+						}
+						else {
+							textoFormatado[i] = 'X';
+							ultimoCharEhNota = false;
+						}
+					}
 					else
 						textoFormatado[i] = 'X';
 				}
@@ -104,7 +115,7 @@ public class Texto {
 		arrayMusical.append("T[" + tempoBPM + "] ");
 		for(int i = 0; i < textoFormatadoChar.length; i++) {
 			if(ehNota(textoFormatadoChar[i])) {
-				// Padr�o estipulado: Oitavas sempre ser�o concatenadas com as notas musicais
+				// Padrao estipulado: Oitavas sempre serao concatenadas com as notas musicais
 				arrayMusical.append(textoFormatadoChar[i]);
 				arrayMusical.append(oitava + " ");
 			}
@@ -137,7 +148,7 @@ public class Texto {
 				arrayMusical.append(' ');
 			}
 			if (Character.isDigit(textoFormatadoChar[i])) {
-				if(instrumento == 127) // Se esta no �ltimo instrumento, volta para o piano
+				if(instrumento == 127) // Se esta no ultimo instrumento, volta para o piano
 					instrumento = Character.getNumericValue(textoFormatadoChar[i]) - 1;
 				else					// Se n�o, vai para o pr�ximo.
 					instrumento = instrumento + Character.getNumericValue(textoFormatadoChar[i]);
@@ -145,7 +156,7 @@ public class Texto {
 			if(textoFormatadoChar[i] == '?') { // Aumeta a oitava em 1
 				if(oitava == "9")
 					oitava = OITAVA_DEFAULT;
-				else {							//ARRUMAR ESSA PORRA
+				else {
 					oitavaInt = Integer.parseInt(oitava);
 					oitavaInt++;
 					oitava = Integer.toString(oitavaInt);
@@ -154,7 +165,7 @@ public class Texto {
 			if(textoFormatadoChar[i] == 'Q') { // Diminui a oitava em 1
 				if(oitava == "1")
 					oitava = OITAVA_DEFAULT;
-				else {							//ARRUMAR ESSA PORRA
+				else {
 					oitavaInt = Integer.parseInt(oitava);
 					oitavaInt--;
 					oitava = Integer.toString(oitavaInt);
